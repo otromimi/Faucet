@@ -2,9 +2,7 @@
 pragma solidity ^0.8.6;
 //SPDX-License-Identifier: UNLICENSED
 
-// Our first contract is a faucet!
-contract Faucet {
-
+contract owned {
     address payable owner;
 
     constructor(){
@@ -15,6 +13,10 @@ contract Faucet {
         require(msg.sender == owner);
             _;
     }
+}
+
+// Our first contract is a faucet!
+contract Faucet is owned{
 
    // Give out ether to anyone who asks
    function withdraw(uint withdraw_amount) public {
