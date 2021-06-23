@@ -15,8 +15,15 @@ contract owned {
     }
 }
 
+contract mortal is owned{
+    // Destructor
+    function destroy() external onlyOwner {
+        selfdestruct(owner);
+    }
+}
+
 // Our first contract is a faucet!
-contract Faucet is owned{
+contract Faucet is mortal{
 
    // Give out ether to anyone who asks
    function withdraw(uint withdraw_amount) public {
@@ -34,10 +41,5 @@ contract Faucet is owned{
     receive() external payable {
             // React to receiving ether
         }
-
-    // Destructor
-    function destroy() external onlyOwner {
-        selfdestruct(owner);
-    }
 
 }
