@@ -10,7 +10,7 @@ contract owned {
     }
 
     modifier onlyOwner {
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Only the contract owner can call this function");
             _;
     }
 }
@@ -29,11 +29,12 @@ contract Faucet is mortal{
    function withdraw(uint withdraw_amount) public {
 
        // Limit withdrawal amount
-       require(withdraw_amount <= 100000000000000000);
-       
-        // Send the amount to the address that requested it
-        payable(msg.sender).transfer(withdraw_amount);
-    }
+       require(withdraw_amount <= 0.1 ether);
+            // Checking for faucet founds
+            require(address(this).balance >= withdraw_amount, "Insufficient balance in faucet for withdrawal request");
+                // Send the amount to the address that requested it
+                payable(msg.sender).transfer(withdraw_amount);
+        }
 
     // Accept any incoming amount
     fallback () external payable {}
