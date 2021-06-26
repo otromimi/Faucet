@@ -25,6 +25,9 @@ contract mortal is owned{
 // Our first contract is a faucet!
 contract Faucet is mortal{
 
+    event Withdrawal(address indexed to, uint amount);
+    event Deposit(address indexed from, uint amount);
+
    // Give out ether to anyone who asks
    function withdraw(uint withdraw_amount) public {
 
@@ -34,6 +37,8 @@ contract Faucet is mortal{
             require(address(this).balance >= withdraw_amount, "Insufficient balance in faucet for withdrawal request");
                 // Send the amount to the address that requested it
                 payable(msg.sender).transfer(withdraw_amount);
+                // Printing event into transacition log
+                emit Withdrawal(msg.sender, withdraw_amount);
         }
 
     // Accept any incoming amount
@@ -41,6 +46,7 @@ contract Faucet is mortal{
 
     receive() external payable {
             // React to receiving ether
+            emit Deposit(msg.sender, msg.value);
         }
 
 }
